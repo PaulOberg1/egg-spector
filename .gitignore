@@ -37,3 +37,6 @@ app.*.symbols
 app.*.map.json
 
 .metadata
+
+generated_plugin_registrant.cc
+generated_plugins.cmake
