@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 import 'dart:io';
 
 void main() {
@@ -36,9 +37,22 @@ class _HomePageState extends State<HomePage> {
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
 
     if (file!=null) {
-      setState(() {
-        _img = File(file.path);
-      });
+      final File imageFile = File(file.path);
+
+      final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
+
+      if (image!=null) {
+        final img.Image resizedImage = img.copyResize(image, width: 500, height: 500);
+
+        final File resizedImageFile = File('${imageFile.parent.path}/resized_image.png')
+          ..writeAsBytesSync(img.encodePng(resizedImage));
+
+        setState(() {
+          _img = resizedImageFile;
+        });
+      }
+
+      
     }
   }
   
