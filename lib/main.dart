@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'dart:io';
+import 'ffi.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +30,13 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage> {
 
+  Network CNN = Network();
+
   File? _img;
+
+  int _isDamaged = 0;
+
+  String displayText = "";
 
   ImagePicker imagePicker = ImagePicker();
 
@@ -44,10 +51,15 @@ class _HomePageState extends State<HomePage> {
       if (image!=null) {
         final img.Image resizedImage = img.copyResize(image, width: 500, height: 500);
 
-        final File resizedImageFile = File('${imageFile.parent.path}/resized_image.png')
+        String newPath = '${imageFile.parent.path}/resized_image.png';
+
+        final File resizedImageFile = File(newPath)
           ..writeAsBytesSync(img.encodePng(resizedImage));
 
         setState(() {
+          _isDamaged = CNN.run(newPath);
+          displayText="result: $_isDamaged";
+          
           _img = resizedImageFile;
         });
       }
@@ -73,7 +85,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _img != null 
-              ? Image.file(_img!)
+              ? Column(children: [
+                Image.file(_img!),
+                Text("Result: $displayText")
+              ],)
               : Text("Upload an image")
           ],
 
