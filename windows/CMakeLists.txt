@@ -1,4 +1,3 @@
-# Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
 project(cnn_app LANGUAGES CXX)
 
@@ -23,6 +22,7 @@ else()
       "Debug" "Profile" "Release")
   endif()
 endif()
+
 # Define settings for the Profile build mode.
 set(CMAKE_EXE_LINKER_FLAGS_PROFILE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
 set(CMAKE_SHARED_LINKER_FLAGS_PROFILE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
@@ -52,11 +52,19 @@ add_subdirectory(${FLUTTER_MANAGED_DIR})
 # Application build; see runner/CMakeLists.txt.
 add_subdirectory("runner")
 
+# Add EggSpector.dll as an imported library
+set(CPP_LIB_PATH ${CMAKE_SOURCE_DIR})
+add_library(MyCppLibrary SHARED IMPORTED)
+set_target_properties(MyCppLibrary PROPERTIES
+    IMPORTED_LOCATION ${CPP_LIB_PATH}/EggSpector.dll
+)
+
+# Ensure the DLL directory is included for linking
+include_directories(${CPP_LIB_PATH})
 
 # Generated plugin build rules, which manage building the plugins and adding
 # them to the application.
 include(flutter/generated_plugins.cmake)
-
 
 # === Installation ===
 # Support files are copied into place next to the executable, so that it can
