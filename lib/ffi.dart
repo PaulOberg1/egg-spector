@@ -1,21 +1,20 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 
-typedef RunCpp = Bool Function(Pointer<Utf8>);
-typedef RunDart = bool Function(Pointer<Utf8>);
+typedef SimpleFunction = Int32 Function(Pointer<Utf8>);
+typedef SimpleFunctionDart = int Function(Pointer<Utf8>);
 
 class Network {
-
   late final DynamicLibrary _networkLib;
 
   Network() {
-    _networkLib = DynamicLibrary.open("./windows/EggSpector.dll");
+    _networkLib = DynamicLibrary.open("windows/EggSpector.dll");
   }
 
-  bool run(String path) {
-    final RunDart run = _networkLib.lookupFunction<RunCpp, RunDart>("checkIfDamaged");
+  int run(String path) {
+    final SimpleFunctionDart run = _networkLib.lookupFunction<SimpleFunction, SimpleFunctionDart>("simpleFunction");
     final Pointer<Utf8> cPath = path.toNativeUtf8();
-    final bool result = run(cPath);
+    final int result = run(cPath);
     calloc.free(cPath);
     return result;
   }
