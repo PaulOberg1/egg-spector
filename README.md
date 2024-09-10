@@ -1,16 +1,15 @@
-# cnn_app
+# Egg-Spector
 
-A new Flutter project.
+**Egg-Spector** is a full-stack application allowing users to upload images of eggs, and determines whether the egg is broken.
+Runs on a convolutional neural network developed in separate repository: https://github.com/PaulOberg1/cnn-from-scratch
 
-## Getting Started
+![Screenshot](windows/data/image.png)
 
-This project is a starting point for a Flutter application.
+## Features:
+- Contains image-upload feature for users to upload .png and .jpg images of eggs.
+- Converts photos into Eigen Matrix format and pipelines the data through convolutional neural network.
+- Displays whether the egg is broken on the Flutter frontend.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Technologies:
+- **Backend:** C++, Eigen
+- **Frontend:** Flutter (Dart)
